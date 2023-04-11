@@ -1,5 +1,5 @@
 
-COMMONCXXFLAGS := -std=c++20 -O2 -Ilib/stb
+COMMONCXXFLAGS := -std=c++20 -O2
 COMMONLDFLAGS := 
 
 CXX := clang++
@@ -60,7 +60,7 @@ build:
 
 # tools
 $(FONT2BIN): tools/font2bin.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $<
+	$(CXX) $(CXXFLAGS) -Ilib/stb -o $@ $<
 
 $(EMBED): tools/embed.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $<
