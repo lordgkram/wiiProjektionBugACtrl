@@ -14,10 +14,12 @@ bool running = true;
 constexpr int32_t mspf = 1000 / 20;
 SDL_Color colors[256];
 
+#ifdef __wii__ // wii
 void *operator new[](size_t v) { return malloc(v); }
 void operator delete[](void *v) { free(v); }
 void *operator new(size_t v) { return malloc(v); }
 void operator delete(void *v) { free(v); }
+#endif /* __wii__ */
 
 #ifdef __cplusplus
 extern "C"
