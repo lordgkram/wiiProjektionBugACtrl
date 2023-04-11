@@ -1,5 +1,5 @@
 
-COMMONCXXFLAGS := -std=c++20 -O2
+COMMONCXXFLAGS := -std=c++20 -O2 -Ilib/stb
 COMMONLDFLAGS := 
 
 CXX := clang++
@@ -27,7 +27,7 @@ WII_BOOT_LDFLAGS := $(COMMON_BOOT_LDFLAGS) -lSDLmain
 
 BOOT_CXXFLAGS := -Ibuild/generated/src -Isrc
 
-COMMON_BOOT_OBJECTS := main vfs/vfsUtil fontUtil files/font
+COMMON_BOOT_OBJECTS := files/font main vfs/vfsUtil fontUtil
 BOOT_OBJECTS := $(foreach obj,$(COMMON_BOOT_OBJECTS),build/obj/host/$(obj).o)
 WII_BOOT_OBJECTS := $(foreach obj,$(COMMON_BOOT_OBJECTS),build/obj/wii/$(obj).o)
 
@@ -59,7 +59,7 @@ build:
 	$(MKDIR) build/generated/src/files
 
 # tools
-$(FONT2BIN): tools/font2bin.cpp tools/stb_image.h
+$(FONT2BIN): tools/font2bin.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $<
 
 $(EMBED): tools/embed.cpp
