@@ -1,0 +1,10 @@
+
+# ide
+.vscode
+
+# build
+build
+
+# random files
+txt
+wiimake.sh
