@@ -32,6 +32,7 @@ BOOT_OBJECTS := $(foreach obj,$(COMMON_BOOT_OBJECTS),build/obj/host/$(obj).o)
 WII_BOOT_OBJECTS := $(foreach obj,$(COMMON_BOOT_OBJECTS),build/obj/wii/$(obj).o)
 
 MKDIR := mkdir -p
+CP := cp
 
 FONT2BIN := build/tools/font2bin
 EMBED := build/tools/embed
@@ -39,7 +40,7 @@ EMBED := build/tools/embed
 all: build host wii
 
 host: build/host/boot
-wii: build/wii/boot.elf
+wii: build/wii/boot.elf build/wii/meta.xml
 
 # folders
 build:
@@ -97,3 +98,7 @@ build/wii/boot.elf: $(WII_BOOT_OBJECTS)
 		$(DEVKITPRO)/devkitPPC/lib/gcc/powerpc-eabi/*/ecrti.o \
 		$(DEVKITPRO)/devkitPPC/lib/gcc/powerpc-eabi/*/ecrtn.o \
 		$(WII_BOOT_LDFLAGS) $(WII_LDFLAGS) $+ -lSDL -laesnd -logc
+
+# homebrew channel files
+build/wii/meta.xml: resources/hbcmeta.xml
+	$(CP) $^ $@

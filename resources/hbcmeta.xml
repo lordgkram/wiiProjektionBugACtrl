@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <app version="1">
+    <name>Wii ProjektionTV BugACtrl</name>
+    <coder>gkram</coder>
+    <version>0.1</version>
+    <release_date>20230412183000</release_date>
+    <short_description>Wii ProjektionTV BugACtrl</short_description>
+    <long_description>Ein ProjektionTV Bagger kontroler für die Wii.</long_description>
+</app>
