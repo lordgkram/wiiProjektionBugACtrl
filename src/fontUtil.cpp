@@ -18,11 +18,11 @@ void loadFont() {
     SDL_Surface *_fontSurface = SDL_CreateRGBSurfaceFrom(fontData, charsPW, charsPH, 16, charsPW * 2, 0xF000, 0x0F00, 0x00F0, 0x000F);
     fontSurface = SDL_DisplayFormat(_fontSurface);
     SDL_FreeSurface(_fontSurface);
+    delete[] fontData;
 }
 
 void deleteFont() {
     SDL_FreeSurface(fontSurface);
-    delete[] fontData;
 }
 
 void writeFont(SDL_Surface *to, uint16_t &x, uint16_t &y, char *text) {
@@ -55,7 +55,6 @@ void writeFont(SDL_Surface *to, uint16_t &x, uint16_t &y, char *text) {
         }
         i++;
     }
-    SDL_UpdateRect(fontSurface, 0, 0, 0, 0);
     delete charRect;
     delete toRect;
 }
