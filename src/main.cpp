@@ -16,14 +16,13 @@ bool running = true;
 constexpr int32_t mspf = 1000 / 60;
 
 #ifdef __wii__
-// newimpl for wii (without cudnt link)
+// newimpl for wii (without couldn't link)
 void *operator new[](size_t v) { return malloc(v); }
 void operator delete[](void *v) { free(v); }
 void *operator new(size_t v) { return malloc(v); }
 void operator delete(void *v) { free(v); }
 
 // wii specific variables
-GXRModeObj *screenPrefMode;
 int8_t wiiExitState = -1;
 #endif /* __wii__ */
 
