@@ -17,9 +17,9 @@ WII_CXXFLAGS := $(COMMONCXXFLAGS) $(WII_COMMONFLAGS) --target=ppc32-none-eabi -g
 		-I$(DEVKITPRO)/libogc/include -I$(DEVKITPRO)/portlibs/wii/include -I$(DEVKITPRO)/portlibs/ppc/include \
 		-gdwarf-4
 # use devkitppc ld because ld.lld dosnt suport relocation 109
-WII_LDFLAGS := $(COMMONLDFLAGS) $(WII_COMMONFLAGS) -mrvl -meabi -mhard-float -g -Wl,--gc-sections -nostartfiles \
+WII_LDFLAGS := $(COMMONLDFLAGS) $(WII_COMMONFLAGS) -mrvl -meabi -mhard-float -g -Wl,--gc-sections \
 		-L$(DEVKITPRO)/libogc/lib/wii -L$(DEVKITPRO)/portlibs/wii/lib -L$(DEVKITPRO)/portlibs/ppc/lib \
-		-lwiiuse -lbte -lwiikeyboard -lfat -logc -lm -lsysbase -lc -lstdc++ -Trvl.ld
+		-lwiiuse -lbte -lwiikeyboard -lfat -logc -Trvl.ld
 
 COMMON_BOOT_LDFLAGS := -lSDL
 BOOT_LDFLAGS := $(COMMON_BOOT_LDFLAGS) -lSDL_net
@@ -93,11 +93,7 @@ build/host/boot: $(BOOT_OBJECTS)
 	$(LD) $(LDFLAGS) $(BOOT_LDFLAGS) -o $@ $^
 
 build/wii/boot.elf: $(WII_BOOT_OBJECTS)
-	$(WII_LD) -o $@ \
-		$(DEVKITPRO)/devkitPPC/powerpc-eabi/lib/crtmain.o \
-		$(DEVKITPRO)/devkitPPC/lib/gcc/powerpc-eabi/*/ecrti.o \
-		$(DEVKITPRO)/devkitPPC/lib/gcc/powerpc-eabi/*/ecrtn.o \
-		$(WII_BOOT_LDFLAGS) $(WII_LDFLAGS) $+ -lSDL -laesnd -logc
+	$(WII_LD) -o $@ $(WII_BOOT_LDFLAGS) $+ $(WII_LDFLAGS) -lSDL -laesnd -logc
 
 # homebrew channel files
 build/wii/meta.xml: resources/hbcmeta.xml
