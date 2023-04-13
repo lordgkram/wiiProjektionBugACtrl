@@ -31,7 +31,7 @@ extern "C"
 #endif
 int main(int argc, char *argv[]) {
 #ifdef __wii__
-    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) == -1)
+    if(SDL_Init(SDL_INIT_VIDEO) == -1)
 #else /* __wii__ */
     if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) == -1)
 #endif /* __wii__ */
