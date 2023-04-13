@@ -25,7 +25,7 @@ void deleteFont() {
     SDL_FreeSurface(fontSurface);
 }
 
-void writeFont(SDL_Surface *to, uint16_t &x, uint16_t &y, char *text) {
+void writeFont(SDL_Surface *to, uint16_t &x, uint16_t &y, uint16_t sx, char *text) {
     SDL_Rect *charRect = new SDL_Rect();
     charRect->w = charW;
     charRect->h = charH;
@@ -38,6 +38,7 @@ void writeFont(SDL_Surface *to, uint16_t &x, uint16_t &y, char *text) {
     uint16_t i = 0;
     while(text[i] != '\0') {
         if(text[i] == '\n') {
+            x = sx;
             toRect->x = x;
             y += charH;
             toRect->y = y;
@@ -51,7 +52,8 @@ void writeFont(SDL_Surface *to, uint16_t &x, uint16_t &y, char *text) {
             charRect->x = chX * charW;
             charRect->y = chY * charH;
             if(SDL_BlitSurface(fontSurface, charRect, to, toRect) < 0) printf("BlitSurface error: %s\n", SDL_GetError());
-            toRect->x += charW;
+            x += charW;
+            toRect->x = x;
         }
         i++;
     }

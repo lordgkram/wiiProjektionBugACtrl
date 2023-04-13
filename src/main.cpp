@@ -62,39 +62,46 @@ int main(int argc, char *argv[]) {
         SDL_Quit();
         return 2;
     }
-    SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 80, 80, 80));
+    SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0, 0, 0));
 
     loadFont();
-    uint16_t wx = 16, wy = 16;
-    writeFont(screen, wx, wy, "SDL JOYSTICK OUT V1\n");
+    uint16_t wx = 16, wy = 16, sx = 16;
+    writeFont(screen, wx, wy, sx, "SDL JOYSTICK OUT V1\n");
 
     char *writeBuff = new char[512];
     snprintf(writeBuff, 512, "%i joysticks:\n" , SDL_NumJoysticks());
-    writeFont(screen, wx, wy, writeBuff);
+    writeFont(screen, wx, wy, sx, writeBuff);
     for(int i = 0; i < SDL_NumJoysticks(); i++) {
         snprintf(writeBuff, 512, "  %s\n", SDL_JoystickName(i));
-        writeFont(screen, wx, wy, writeBuff);
+        writeFont(screen, wx, wy, sx, writeBuff);
         SDL_Joystick *joystick = SDL_JoystickOpen(i);
         snprintf(writeBuff, 512, "    %i axes\n", SDL_JoystickNumAxes(joystick));
-        writeFont(screen, wx, wy, writeBuff);
+        writeFont(screen, wx, wy, sx, writeBuff);
         snprintf(writeBuff, 512, "    %i buttons\n", SDL_JoystickNumButtons(joystick));
-        writeFont(screen, wx, wy, writeBuff);
+        writeFont(screen, wx, wy, sx, writeBuff);
         snprintf(writeBuff, 512, "    %i balls\n", SDL_JoystickNumBalls(joystick));
-        writeFont(screen, wx, wy, writeBuff);
+        writeFont(screen, wx, wy, sx, writeBuff);
         snprintf(writeBuff, 512, "    %i hats\n", SDL_JoystickNumHats(joystick));
-        writeFont(screen, wx, wy, writeBuff);
+        writeFont(screen, wx, wy, sx, writeBuff);
         SDL_JoystickClose(joystick);
     }
     snprintf(writeBuff, 512, "%d BPX\n", screen->format->BytesPerPixel);
-    writeFont(screen, wx, wy, writeBuff);
+    writeFont(screen, wx, wy, sx, writeBuff);
     snprintf(writeBuff, 512, "%s\n", (screen->flags & SDL_HWSURFACE) ? "is HW" : "is not HW");
-    writeFont(screen, wx, wy, writeBuff);
+    writeFont(screen, wx, wy, sx, writeBuff);
+    snprintf(writeBuff, 512, "%s\n", (screen->flags & SDL_DOUBLEBUF) ? "is DB" : "is not DB");
+    writeFont(screen, wx, wy, sx, writeBuff);
+    snprintf(writeBuff, 512, "V DRIVER: ");
+    writeFont(screen, wx, wy, sx, writeBuff);
+    SDL_VideoDriverName(writeBuff, 256);
+    writeFont(screen, wx, wy, sx, writeBuff);
+    snprintf(writeBuff, 512, "\n");
+    writeFont(screen, wx, wy, sx, writeBuff);
     
     SDL_Event event;
     uint32_t startMs = SDL_GetTicks();
     int e = 0;
     while(running) {
-        //SDL_PumpEvents();
 #ifndef __wii__
         // SDL input
         while(SDL_PollEvent(&event)) {
@@ -113,8 +120,12 @@ int main(int argc, char *argv[]) {
 #endif /* ! __wii__ */
         wx = 16;
         snprintf(writeBuff, 512, "%d", e);
-        writeFont(screen, wx, wy, writeBuff);
+        writeFont(screen, wx, wy, sx, writeBuff);
 
+#ifdef __wii__
+        // dumb hack witch somehow updates the bufferdata in a way that dolphin updates the immage
+        ((uint8_t *)screen->pixels)[1] = e & 3;
+#endif /* __wii__ */
         SDL_Flip(screen);
         e++;
 

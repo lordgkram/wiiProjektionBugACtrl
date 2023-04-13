@@ -25,6 +25,6 @@ extern SDL_Surface *fontSurface;
 
 void loadFont();
 void deleteFont();
-void writeFont(SDL_Surface *to, uint16_t &x, uint16_t &y, char *text);
+void writeFont(SDL_Surface *to, uint16_t &x, uint16_t &y, uint16_t sx, char *text);
 
 #endif /* FONT_UTIL_HPP_ */
