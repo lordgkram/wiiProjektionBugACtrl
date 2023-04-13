@@ -8,7 +8,8 @@ CXXFLAGS := $(COMMONCXXFLAGS)
 LDFLAGS := $(COMMONLDFLAGS)
 
 WII_CXX := clang++
-WII_LD := PATH=$(DEVKITPATH)/devkitPPC/bin:$(PATH) $(DEVKITPRO)/devkitPPC/bin/powerpc-eabi-g++
+# use devkitppc ld because ld.lld dosnt suport relocation 109
+WII_LD := PATH=$(DEVKITPRO)/devkitPPC/bin:$(PATH) $(DEVKITPRO)/devkitPPC/bin/powerpc-eabi-g++
 WII_COMMONFLAGS := -mcpu=750 -ffunction-sections -fdata-sections -DGEKKO -D__wii__ -DHW_RVL
 WII_CXXFLAGS := $(COMMONCXXFLAGS) $(WII_COMMONFLAGS) --target=ppc32-none-eabi -g -nostdlibinc \
 		-isystem $(DEVKITPRO)/devkitPPC/powerpc-eabi/include/c++/*/powerpc-eabi \
@@ -16,7 +17,6 @@ WII_CXXFLAGS := $(COMMONCXXFLAGS) $(WII_COMMONFLAGS) --target=ppc32-none-eabi -g
 		-isystem $(DEVKITPRO)/devkitPPC/powerpc-eabi/include \
 		-I$(DEVKITPRO)/libogc/include -I$(DEVKITPRO)/portlibs/wii/include -I$(DEVKITPRO)/portlibs/ppc/include \
 		-gdwarf-4
-# use devkitppc ld because ld.lld dosnt suport relocation 109
 WII_LDFLAGS := $(COMMONLDFLAGS) $(WII_COMMONFLAGS) -mrvl -meabi -mhard-float -g -Wl,--gc-sections \
 		-L$(DEVKITPRO)/libogc/lib/wii -L$(DEVKITPRO)/portlibs/wii/lib -L$(DEVKITPRO)/portlibs/ppc/lib \
 		-lwiiuse -lbte -lwiikeyboard -lfat -logc -Trvl.ld
