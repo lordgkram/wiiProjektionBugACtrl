@@ -17,14 +17,11 @@ constexpr unsigned charsPH = charH * charsY;
 constexpr unsigned charsPC = charsPW * charsPH;
 constexpr char charErr = '?';
 
-constexpr uint16_t color = 0xFFFF;
-constexpr uint16_t colorNone = 0x0000;
-
-extern uint16_t *fontData;
-extern SDL_Surface *fontSurface;
+extern uint16_t colors[8];
+extern SDL_Surface *fontSurfaces[8];
 
 void loadFont();
 void deleteFont();
-void writeFont(SDL_Surface *to, uint16_t &x, uint16_t &y, uint16_t sx, char *text);
+void writeFont(SDL_Surface *to, uint16_t &x, uint16_t &y, uint16_t sx, uint8_t &scolor, char *text);
 
 #endif /* FONT_UTIL_HPP_ */

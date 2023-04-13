@@ -31,7 +31,7 @@ extern "C"
 #endif
 int main(int argc, char *argv[]) {
 #ifdef __wii__
-    if(SDL_Init(SDL_INIT_VIDEO) == -1)
+    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) == -1)
 #else /* __wii__ */
     if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) == -1)
 #endif /* __wii__ */
@@ -66,37 +66,38 @@ int main(int argc, char *argv[]) {
 
     loadFont();
     uint16_t wx = 16, wy = 16, sx = 16;
-    writeFont(screen, wx, wy, sx, "SDL JOYSTICK OUT V1\n");
+    uint8_t fontColor = 7;
+    writeFont(screen, wx, wy, sx, fontColor, "SDL JOYSTICK OUT \xA4V1\xA7\n");
 
     char *writeBuff = new char[512];
-    snprintf(writeBuff, 512, "%i joysticks:\n" , SDL_NumJoysticks());
-    writeFont(screen, wx, wy, sx, writeBuff);
+    snprintf(writeBuff, 512, "\xA6%i\xA7 joysticks:\n" , SDL_NumJoysticks());
+    writeFont(screen, wx, wy, sx, fontColor, writeBuff);
     for(int i = 0; i < SDL_NumJoysticks(); i++) {
-        snprintf(writeBuff, 512, "  %s\n", SDL_JoystickName(i));
-        writeFont(screen, wx, wy, sx, writeBuff);
+        snprintf(writeBuff, 512, "  \xA3%s\xA7\n", SDL_JoystickName(i));
+        writeFont(screen, wx, wy, sx, fontColor, writeBuff);
         SDL_Joystick *joystick = SDL_JoystickOpen(i);
-        snprintf(writeBuff, 512, "    %i axes\n", SDL_JoystickNumAxes(joystick));
-        writeFont(screen, wx, wy, sx, writeBuff);
-        snprintf(writeBuff, 512, "    %i buttons\n", SDL_JoystickNumButtons(joystick));
-        writeFont(screen, wx, wy, sx, writeBuff);
-        snprintf(writeBuff, 512, "    %i balls\n", SDL_JoystickNumBalls(joystick));
-        writeFont(screen, wx, wy, sx, writeBuff);
-        snprintf(writeBuff, 512, "    %i hats\n", SDL_JoystickNumHats(joystick));
-        writeFont(screen, wx, wy, sx, writeBuff);
+        snprintf(writeBuff, 512, "    \xA2%i\xA7 axes\n", SDL_JoystickNumAxes(joystick));
+        writeFont(screen, wx, wy, sx, fontColor, writeBuff);
+        snprintf(writeBuff, 512, "    \xA2%i\xA7 buttons\n", SDL_JoystickNumButtons(joystick));
+        writeFont(screen, wx, wy, sx, fontColor, writeBuff);
+        snprintf(writeBuff, 512, "    \xA2%i\xA7 balls\n", SDL_JoystickNumBalls(joystick));
+        writeFont(screen, wx, wy, sx, fontColor, writeBuff);
+        snprintf(writeBuff, 512, "    \xA2%i\xA7 hats\n", SDL_JoystickNumHats(joystick));
+        writeFont(screen, wx, wy, sx, fontColor, writeBuff);
         SDL_JoystickClose(joystick);
     }
-    snprintf(writeBuff, 512, "%d BPX\n", screen->format->BytesPerPixel);
-    writeFont(screen, wx, wy, sx, writeBuff);
-    snprintf(writeBuff, 512, "%s\n", (screen->flags & SDL_HWSURFACE) ? "is HW" : "is not HW");
-    writeFont(screen, wx, wy, sx, writeBuff);
-    snprintf(writeBuff, 512, "%s\n", (screen->flags & SDL_DOUBLEBUF) ? "is DB" : "is not DB");
-    writeFont(screen, wx, wy, sx, writeBuff);
-    snprintf(writeBuff, 512, "V DRIVER: ");
-    writeFont(screen, wx, wy, sx, writeBuff);
+    snprintf(writeBuff, 512, "\xA5%d\xA7 BPX\n", screen->format->BytesPerPixel);
+    writeFont(screen, wx, wy, sx, fontColor, writeBuff);
+    snprintf(writeBuff, 512, "%s\xA7\n", (screen->flags & SDL_HWSURFACE) ? "\xA2is HW" : "\xA4is not HW");
+    writeFont(screen, wx, wy, sx, fontColor, writeBuff);
+    snprintf(writeBuff, 512, "%s\xA7\n", (screen->flags & SDL_DOUBLEBUF) ? "\xA2is DB" : "\xA4is not DB");
+    writeFont(screen, wx, wy, sx, fontColor, writeBuff);
+    snprintf(writeBuff, 512, "V DRIVER: \xA3");
+    writeFont(screen, wx, wy, sx, fontColor, writeBuff);
     SDL_VideoDriverName(writeBuff, 256);
-    writeFont(screen, wx, wy, sx, writeBuff);
-    snprintf(writeBuff, 512, "\n");
-    writeFont(screen, wx, wy, sx, writeBuff);
+    writeFont(screen, wx, wy, sx, fontColor, writeBuff);
+    snprintf(writeBuff, 512, "\xA7\n");
+    writeFont(screen, wx, wy, sx, fontColor, writeBuff);
     
     SDL_Event event;
     uint32_t startMs = SDL_GetTicks();
@@ -119,8 +120,8 @@ int main(int argc, char *argv[]) {
         if(WPAD_ButtonsDown(0) & WPAD_BUTTON_HOME) running = false;
 #endif /* ! __wii__ */
         wx = 16;
-        snprintf(writeBuff, 512, "%d", e);
-        writeFont(screen, wx, wy, sx, writeBuff);
+        snprintf(writeBuff, 512, "\xA5%d\xA7", e);
+        writeFont(screen, wx, wy, sx, fontColor, writeBuff);
 
 #ifdef __wii__
         // dumb hack witch somehow updates the bufferdata in a way that dolphin updates the immage
