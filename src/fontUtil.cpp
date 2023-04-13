@@ -1,5 +1,8 @@
 #include "fontUtil.hpp"
 
+#include "files/font.hpp"
+#include "vfs/vfsUtil.hpp"
+
 uint16_t colors[8];
 SDL_Surface *fontSurfaces[8];
 

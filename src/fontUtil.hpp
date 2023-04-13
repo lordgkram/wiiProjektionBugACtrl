@@ -3,9 +3,6 @@
 
 #include "SDL/SDL.h"
 
-#include "files/font.hpp"
-#include "vfs/vfsUtil.hpp"
-
 constexpr unsigned charW = 8;
 constexpr unsigned charH = 8;
 constexpr unsigned charsX = 16;
