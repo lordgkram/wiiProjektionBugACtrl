@@ -27,9 +27,11 @@ WII_BOOT_LDFLAGS := $(COMMON_BOOT_LDFLAGS) -lSDLmain
 
 BOOT_CXXFLAGS := -Ibuild/generated/src -Isrc
 
-COMMON_BOOT_OBJECTS := files/font main vfs/vfsUtil fontUtil
-BOOT_OBJECTS := $(foreach obj,$(COMMON_BOOT_OBJECTS),build/obj/host/$(obj).o)
-WII_BOOT_OBJECTS := $(foreach obj,$(COMMON_BOOT_OBJECTS),build/obj/wii/$(obj).o)
+COMMON_BOOT_OBJECTS := files/font main vfs/vfsUtil fontUtil input
+BOOT_RAW_OBJECTS := $(COMMON_BOOT_OBJECTS) sdlInput
+BOOT_OBJECTS := $(foreach obj,$(BOOT_RAW_OBJECTS),build/obj/host/$(obj).o)
+WII_BOOT_RAW_OBJECTS := $(COMMON_BOOT_OBJECTS) wiiInput
+WII_BOOT_OBJECTS := $(foreach obj,$(WII_BOOT_RAW_OBJECTS),build/obj/wii/$(obj).o)
 
 MKDIR := mkdir -p
 CP := cp
