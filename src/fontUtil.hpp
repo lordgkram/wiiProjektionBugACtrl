@@ -4,9 +4,9 @@
 #include "SDL/SDL.h"
 
 constexpr unsigned charW = 8;
-constexpr unsigned charH = 8;
+constexpr unsigned charH = 16;
 constexpr unsigned charsX = 16;
-constexpr unsigned charsY = 16;
+constexpr unsigned charsY = 8;
 constexpr unsigned charsS = 0;
 constexpr unsigned charsC = charsX * charsY;
 constexpr unsigned charsPW = charW * charsX;
