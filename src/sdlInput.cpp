@@ -2,6 +2,8 @@
 
 #include <SDL/SDL.h>
 
+#include "net.hpp"
+
 SDL_Event event;
 
 bool handleInput() {
@@ -52,6 +54,24 @@ bool handleInput() {
             // get accept
             case SDLK_z:
                 toggleCtrlState();
+                break;
+
+            // net delays
+            case SDLK_h:
+                framesPerMove++;
+                if(framesPerMove >= 60) framesPerMove = 60;
+                break;
+            case SDLK_n:
+                framesPerMove--;
+                if(framesPerMove <= 0) framesPerMove = 1;
+                break;
+            case SDLK_g:
+                percentMsPerMove += 0.02f;
+                if(percentMsPerMove > 1) percentMsPerMove = 1;
+                break;
+            case SDLK_b:
+                percentMsPerMove -= 0.02f;
+                if(percentMsPerMove <= 0) percentMsPerMove = 0.02f;
                 break;
             
             default:

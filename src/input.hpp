@@ -9,8 +9,8 @@ bool handleInput();
 
 enum bugACtrlState {
     NO_CTRL,
-    TRY_RECIVE,
-    TRY_RECIVE_NETAPP, // net handle send request
+    TRY_RECEIVE,
+    TRY_RECEIVE_NETAPP, // net handle send request
     CTRL,
     TRY_REVOKE,
     TRY_REVOKE_NETAPP // net handle send request

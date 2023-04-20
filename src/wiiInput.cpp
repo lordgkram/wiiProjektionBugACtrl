@@ -7,6 +7,7 @@
 
 #include "fontUtil.hpp"
 #include "main.hpp"
+#include "net.hpp"
 
 constexpr float deg2ang = std::numbers::pi / 180;
 
@@ -72,6 +73,24 @@ bool handleInput() {
             axis0Active = axisDActive;
             axis1Active = axisDActive;
         }
+
+        // net speed
+        if(pressed & WPAD_BUTTON_RIGHT) {
+            framesPerMove++;
+            if(framesPerMove >= 60) framesPerMove = 60;
+        }
+        if(pressed & WPAD_BUTTON_LEFT) {
+            framesPerMove--;
+            if(framesPerMove <= 0) framesPerMove = 1;
+        }
+        if(pressed & WPAD_BUTTON_UP) {
+            percentMsPerMove += 0.02f;
+            if(percentMsPerMove > 1) percentMsPerMove = 1;
+        }
+        if(pressed & WPAD_BUTTON_DOWN) {
+            percentMsPerMove -= 0.02f;
+            if(percentMsPerMove <= 0) percentMsPerMove = 0.02f;
+        }
     } else {
         // no nunchuck
         axis0 = 0;
@@ -84,7 +103,7 @@ bool handleInput() {
         axisDActive = false;
 
         writeFont(screen, fontX, fontY, fontLineX, fontColor, "\xA7Please \xA6""connect\xA7 a \xA3Nunchuk\xA7 to the \xA5WFB1\xA7\n");
-        if(currBugACtrlState == TRY_RECIVE) currBugACtrlState = NO_CTRL;
+        if(currBugACtrlState == TRY_RECEIVE) currBugACtrlState = NO_CTRL;
         else if(currBugACtrlState == CTRL) currBugACtrlState = TRY_REVOKE;
     }
 

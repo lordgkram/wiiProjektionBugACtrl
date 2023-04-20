@@ -4,6 +4,7 @@
 
 #include "fontUtil.hpp"
 #include "input.hpp"
+#include "net.hpp"
 
 #ifdef __wii__
 #include "gccore.h"
@@ -67,6 +68,7 @@ int main(int argc, char *argv[]) {
 
     loadFont();
     fontWriteBuff = new char[512];
+    initNetwork();
 
     uint32_t startMs = SDL_GetTicks();
     int e = 0;
@@ -78,6 +80,9 @@ int main(int argc, char *argv[]) {
 
         running = handleInput();
         printAxis();
+
+        handleNetwork();
+        printNetwork();
 
         snprintf(fontWriteBuff, 512, "\xA7""Frame: \xA5%d\xA7\n", e);
         writeFont(screen, fontX, fontY, fontLineX, fontColor, fontWriteBuff);
@@ -99,6 +104,7 @@ int main(int argc, char *argv[]) {
     }
 
     // shutdown
+    endNetwork();
     delete[] fontWriteBuff;
     deleteFont();
     SDL_Quit();

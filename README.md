@@ -20,7 +20,19 @@ Dieser kontroller erlaubt es den ProjektionTV Bagger mit einer Wii zu kontrollie
 - Clang
 
 ### für das host system
-- SDL1.2
+- SDL 1.2
+    - SDL_net 1.2
+
+## Einstellungen
+Zum kompilieren von dem Nativen code wird `src/config.h` benörigt welche manuell erschaffen werden muss.
+In dieser Datei steht wo die Porxy zu finden ist.
+Eine vorgage ist `src/cnfigExample.h`.
+
+Zum ausführen von `proxy.js` wird `apiKey.json` benötigt: vorlage `apiKeyExample.json`
+
+## Ausführen
+Zum ausführen des Kompilierten code muss man ebenfalls vorher die proxy(`proxy.js`) starten.
+Diese Proxy wandelt die einfachen befehle des Clienten in befehle für die Bagger api um.
 
 ## Kompilation
 ```sh

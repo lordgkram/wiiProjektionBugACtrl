@@ -14,8 +14,8 @@ bool axis2Active = true;
 bool axisDActive = true;
 
 void toggleCtrlState() {
-    if(currBugACtrlState == NO_CTRL) currBugACtrlState = TRY_RECIVE;
-    else if(currBugACtrlState == TRY_RECIVE) currBugACtrlState = NO_CTRL;
+    if(currBugACtrlState == NO_CTRL) currBugACtrlState = TRY_RECEIVE;
+    else if(currBugACtrlState == TRY_RECEIVE) currBugACtrlState = NO_CTRL;
     else if(currBugACtrlState == CTRL) currBugACtrlState = TRY_REVOKE;
     else if(currBugACtrlState == TRY_REVOKE) currBugACtrlState = CTRL;
 }
@@ -30,11 +30,11 @@ void printAxis() {
     snprintf(fontWriteBuff, 512, "\xA3""Axis-D\xA7: %c%f\xA7\n", axisDActive ? '\xA6' : '\xA5', axisD);
     writeFont(screen, fontX, fontY, fontLineX, fontColor, fontWriteBuff);
 
-    writeFont(screen, fontX, fontY, fontLineX, fontColor, "\xA7""In Conntroll state: ");
+    writeFont(screen, fontX, fontY, fontLineX, fontColor, "\xA7""In Controll state: ");
     switch (currBugACtrlState) {
     case NO_CTRL: writeFont(screen, fontX, fontY, fontLineX, fontColor, "\xA6No Ctrl\xA7\n"); break;
-    case TRY_RECIVE: writeFont(screen, fontX, fontY, fontLineX, fontColor, "\xA2Try Recive\xA7\n"); break;
-    case TRY_RECIVE_NETAPP: writeFont(screen, fontX, fontY, fontLineX, fontColor, "\xA4Try Recive\xA7\n"); break;
+    case TRY_RECEIVE: writeFont(screen, fontX, fontY, fontLineX, fontColor, "\xA2Try Receive\xA7\n"); break;
+    case TRY_RECEIVE_NETAPP: writeFont(screen, fontX, fontY, fontLineX, fontColor, "\xA4Try Receive\xA7\n"); break;
     case CTRL: writeFont(screen, fontX, fontY, fontLineX, fontColor, "\xA6""Ctrl\xA7\n"); break;
     case TRY_REVOKE: writeFont(screen, fontX, fontY, fontLineX, fontColor, "\xA2Try Revoke\xA7\n"); break;
     case TRY_REVOKE_NETAPP: writeFont(screen, fontX, fontY, fontLineX, fontColor, "\xA4Try Revoke\xA7\n"); break;

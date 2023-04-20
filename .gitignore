@@ -8,3 +8,8 @@ build
 # random files
 txt
 wiimake.sh
+testsse.js
+
+# private files
+apiKey.json
+src/config.h
