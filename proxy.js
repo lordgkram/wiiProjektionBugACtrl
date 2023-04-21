@@ -13,6 +13,7 @@ var ctrlState = 0;
 var bugAFree = false;
 var bugAEnabled = false;
 
+var sendToBaggerPortal = true;
 var apiKey = "";
 
 var server = net.createServer({keepAlive: true}, function(socket) {
@@ -79,8 +80,9 @@ async function removeControll() {
 }
 
 async function sendJoints(joint_a, joint_b, joint_c, vertical_axis) {
-    // console.log('ja: %d, jb: %d, jc: %d, va: %d', joint_a, joint_b, joint_c, vertical_axis);
+    if(!sendToBaggerPortal) console.log('ja: %d, jb: %d, jc: %d, va: %d', joint_a, joint_b, joint_c, vertical_axis);
     if(ctrlState != 3) return;
+    if(!sendToBaggerPortal) return;
     var out = {};
     var relavantToSend = false;
     if(joint_a != 0) { out["joint_a"] = joint_a; relavantToSend = true; }
@@ -99,6 +101,7 @@ async function sendJoints(joint_a, joint_b, joint_c, vertical_axis) {
 }
 
 async function sendIgnite(state) {
+    if(!sendToBaggerPortal) return {ok: true};
     return await fetch("https://bagger.projektion.tv/api/bugacontrol/ignite", {
         method: "POST",
         body: JSON.stringify({
@@ -131,6 +134,7 @@ async function handleServerStateAll(stateData) {
 }
 
 async function doSSEListen() {
+    if(!sendToBaggerPortal) return;
     https.get(`https://bagger.projektion.tv/api/bugacontrol/status/subscribe?apikey=${apiKey}`, (res) => {
         if(res.statusCode !== 200) return;
         if(!/^text\/event-stream/.test(res.headers['content-type'])) return;
@@ -159,21 +163,26 @@ async function doSSEListen() {
     });
 }
 
-apiKey = JSON.parse(fs.readFileSync("apiKey.json", { encoding: "utf-8" })).apiKey;
+var apiFileData = JSON.parse(fs.readFileSync("apiKey.json", { encoding: "utf-8" }));
+if(apiFileData["apiKey"] !== undefined) apiKey = apiFileData["apiKey"];
+if(apiFileData["sendToBaggerPortal"] !== undefined) sendToBaggerPortal = apiFileData["sendToBaggerPortal"];
 
-fetch('https://bagger.projektion.tv/api/bugacontrol/status', {
-        headers: {
-            "api-key": apiKey,
-        },
-        method: "get",
-    })
-    .then((res) => res.json())
-    .then((stateData) => {
-        handleServerState(stateData);
-    });
+if(sendToBaggerPortal)
+    fetch('https://bagger.projektion.tv/api/bugacontrol/status', {
+            headers: {
+                "api-key": apiKey,
+            },
+            method: "get",
+        })
+        .then((res) => res.json())
+        .then((stateData) => {
+            handleServerState(stateData);
+        }).catch((e) => {
+            console.log('faild to fetch bagger status: %s', e);
+        });
 
 doSSEListen();
 
 interval = setInterval(writeClient, 100);
 
-server.listen(8095, '127.0.0.1');
+server.listen(8095, '0.0.0.0');
