@@ -23,37 +23,27 @@ bool sendState(sendPackData *data) {
 }
 
 void initNetwork() {
-    printf("net: init\n");
     initOK = false;
-    printf("00\n");
     if(SDLNet_Init() == -1) return;
-    printf("01\n");
     if(SDLNet_ResolveHost(&ip, PROXYHOST, PROXYPORT) == -1) return;
-    printf("02\n");
     sock = SDLNet_TCP_Open(&ip);
-    printf("03\n");
     if(!sock) return;
-    printf("04\n");
     socketSet = SDLNet_AllocSocketSet(1);
-    printf("05\n");
     if(!socketSet)  {
         SDLNet_TCP_Close(sock);
         return;
     }
-    printf("06\n");
     if(SDLNet_TCP_AddSocket(socketSet, sock) == -1) {
         SDLNet_TCP_Close(sock);
         SDLNet_FreeSocketSet(socketSet);
         return;
     }
-    printf("07\n");
     netConnected = true;
     initOK = true;
     retCout = 0;
 }
 
 void endNetwork() {
-    printf("net: end\n");
     if(!initOK) return;
     netConnected = false;
     SDLNet_TCP_DelSocket(socketSet, sock);
@@ -67,7 +57,6 @@ void loopNetwork() {
     if(!initOK) return;
     if(!netConnected) {
         if(retCout > 3) return;
-        printf("net: recon\n");
         retCout++;
         if(!sock) {
             SDLNet_TCP_DelSocket(socketSet, sock);
