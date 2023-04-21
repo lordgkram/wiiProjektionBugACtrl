@@ -24,7 +24,7 @@ sockaddr_in *address;
 sockaddr *addressFC;
 pollsd pollData;
 
-constexpr uint32_t conTimeout = 1000;
+constexpr uint32_t conTimeout = 10000;
 
 s32 tcp_socket() {
     s32 s = net_socket(PF_INET, SOCK_STREAM, 0);
@@ -67,7 +67,7 @@ void initNetwork() {
     initOK = false;
     if(net_init() < 0) return;
     hostent *resolveData = net_gethostbyname(PROXYHOST);
-	if (!resolveData || resolveData->h_addrtype != PF_INET || resolveData->h_length != 4) {
+	if ((!resolveData) || (resolveData->h_addrtype != PF_INET) || (resolveData->h_length != 4)) {
         net_deinit();
 		return;
 	}
@@ -101,7 +101,7 @@ void initNetwork() {
             if(result == -EISCONN) break; // connected
             if(result == -EINPROGRESS || result == -EALREADY) {
                 // in progress
-                SDL_Delay(5);
+                SDL_Delay(20);
                 continue;
             }
             // unhandleable
