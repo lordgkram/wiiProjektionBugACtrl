@@ -20,6 +20,7 @@ var server = net.createServer({keepAlive: true}, function(socket) {
     clientList = clientList.concat([socket]);
     socket.on('data', handleData);
     socket.on('end', () => { clientList = clientList.filter((value, index, array) => { return value !== socket; }); });
+    socket.on('error', (e) => { console.log(e.message); });
 });
 
 /**
